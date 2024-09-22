@@ -11,7 +11,7 @@ bool isOpeningBracket(char ch){
 }
 
 bool areMatchingBrackets(char bracket1,char bracket2){
-    return (bracket1 == '(' && bracket2 == ')') || (bracket1 == '{' && bracket2 == '}') || (bracket1 == '[' || bracket2 == ']');
+    return (bracket1 == '(' && bracket2 == ')') || (bracket1 == '{' && bracket2 == '}') || (bracket1 == '[' && bracket2 == ']');
 }
 
 bool isBalancedExpression(const std::string& str){
