@@ -20,6 +20,15 @@ std::vector<int> merge(std::vector<int>& v1,std::vector<int>& v2){
             index2++;
         }
     }
+    while(index1 < v1.size()){
+            if(isEven(v1[index1])) res.push_back(v1[index1]);
+            index1++;
+    }
+    while(index2 < v2.size()){
+        if(isEven(v2[index2])) res.push_back(v2[index2]);
+        index2++;
+    }
+
     index1 = index2 = 0;
     while(index1 < v1.size() && index2 < v2.size()){
         if(v1[index1] <= v2[index2]){
