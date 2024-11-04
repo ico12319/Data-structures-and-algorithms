@@ -1,67 +1,86 @@
-#include <iostream>
+#include "Execute.h"
 
 struct ListNode{
-    ListNode* next;
     int val;
+    ListNode* next;
     
-    ListNode(int val) : val(val) , next(nullptr){}
-    ListNode(int val, ListNode* next) : val(val), next(next){}
+    ListNode(int val,ListNode* next) : val(val),next(next){}
+    ListNode(int val) : val(val),next(nullptr){}
 };
 
-ListNode* merge(ListNode* list1,ListNode* list2){
-    ListNode* dummy = new ListNode(0);
-    ListNode* curr = dummy;
-    while(list1!=nullptr && list2!=nullptr){
-        if(list1->val <= list2->val){
-            curr->next = list1;
-            list1 = list1->next;
-        }
-        else{
-            curr->next = list2;
-            list2 = list2->next;
-        }
-        curr = curr->next;
-    }
-    if(list1!=nullptr)
-        curr->next = list1;
-    else
-        curr->next = list2;
-    
-    ListNode* res = dummy->next;
-    delete dummy;
-    return res;
-}
-
-ListNode* getMid(ListNode* head){
-    ListNode* slow = head;
+ListNode* get_mid(ListNode* head){
     ListNode* fast = head->next;
-    while(fast!= nullptr && fast->next != nullptr){
+    ListNode* slow = head;
+    
+    while(fast && fast->next){
         slow = slow->next;
         fast = fast->next->next;
     }
     return slow;
 }
 
+ListNode* merge(ListNode* list1,ListNode* list2){
+    if (!list1) return list2;
+    if (!list2) return list1;
+    ListNode* resultHead = nullptr;
+    ListNode* resultIter = nullptr;
+    ListNode* firstIter = list1;
+    ListNode* secondIter = list2;
+    
+    if(firstIter->val <= secondIter->val){
+        resultHead = firstIter;
+        resultIter = firstIter;
+        firstIter = firstIter->next;
+    }
+    else if(firstIter->val > secondIter->val){
+        resultHead = secondIter;
+        resultIter = secondIter;
+        secondIter = secondIter->next;
+    }
+    
+    while(firstIter && secondIter){
+        if(firstIter->val <= secondIter->val){
+            resultIter->next = firstIter;
+            firstIter = firstIter->next;
+        }
+        else{
+            resultIter->next = secondIter;
+            secondIter = secondIter->next;
+        }
+        resultIter = resultIter->next;
+    }
+    if(firstIter)
+        resultIter->next = firstIter;
+    if(secondIter)
+        resultIter->next = secondIter;
+    
+    return resultHead;
+}
+
 ListNode* mergeSort(ListNode* list){
-    if(list == nullptr || list->next == nullptr)
+    if(!list || !list->next)
         return list;
     
-    ListNode* secondHalf = getMid(list)->next;
-    getMid(list)->next = nullptr;
-    ListNode* left = mergeSort(list);
-    ListNode* right = mergeSort(secondHalf);
+    ListNode* mid = get_mid(list);
+    ListNode* left = list;
+    ListNode* right = mid->next;
+    mid->next = nullptr;
     
-    return merge(left,right);
+    left = mergeSort(left);
+    right = mergeSort(right);
     
+    return merge(left, right);
 }
 
 int main(int argc, const char * argv[]) {
-    ListNode* list = new ListNode(20, new ListNode(14, new ListNode(7,new ListNode(77,new ListNode(1)))));
-    std::cout<<getMid(list)->val<<std::endl;
-    ListNode* curr = mergeSort(list);
-    while(curr!=nullptr){
+    
+    ListNode* list1 = new ListNode(22,new ListNode(1,new ListNode(0,new ListNode(101,new ListNode(3)))));
+   
+    ListNode* merged = mergeSort(list1);
+    ListNode* curr = merged;
+    while(curr){
         std::cout<<curr->val<<" ";
         curr = curr->next;
     }
-    delete list;
+
 }
