@@ -1,18 +1,23 @@
-#include "Bst.hpp"
+#include "binary_search_tree.hpp"
 
 int main(int argc, const char * argv[]) {
-    Bst<int> b;
+    binary_search_tree<int> bst;
+    bst.insert(1);
+    bst.insert(18);
+    bst.insert(0);
+    bst.insert(22);
     
+        
     
-    for(int i = 0;i<55;i++)
-        b.insert(i);
+    auto it = bst.forward_begin();
+    it++;
+    it++;
+    it++;
     
-    b.remove(54);
-    b.remove(27);
-    b.remove(1);
-    b.remove(6);
-    
-    
-    for(int i = 0;i<b.getSize();i++)
-        std::cout<<b[i]<<" ";
+    auto it2 = bst.backward_begin();
+    it2--;
+    it2--;
+    it2--;
+    std::cout<<*it2<<std::endl;
+
 }
